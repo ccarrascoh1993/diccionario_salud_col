@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Diccionario del Sistema de Salud Colombiano</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+        }
+        h1 {
+            text-align: center;
+            color: #333;
+        }
+        dl {
+            width: 60%;
+            margin: auto;
+        }
+        dt {
+            font-weight: bold;
+            margin-top: 10px;
+        }
+        dd {
+            margin-left: 20px;
+            margin-bottom: 10px;
+        }
+        .controls {
+            text-align: center;
+            margin: 20px;
+        }
+        .controls input, .controls button {
+            margin: 5px;
+        }
+        .edit-buttons {
+            margin-left: 20px;
+        }
+    </style>
+</head>
+<body>
+    <h1>Diccionario del Sistema de Salud Colombiano</h1>
+    <div class="controls">
+        <input type="text" id="term" placeholder="Nuevo término">
+        <input type="text" id="definition" placeholder="Definición">
+        <button onclick="addTerm()">Agregar</button>
+    </div>
+    <dl id="dictionary">
+        <!-- Los términos se cargarán aquí -->
+    </dl>
+    <script>
+        function addTerm() {
+            const term = document.getElementById('term').value;
+            const definition = document.getElementById('definition').value;
+
+            if(term && definition) {
+                const dl = document.getElementById('dictionary');
+
+                const dt = document.createElement('dt');
+                dt.textContent = term;
+
+                const dd = document.createElement('dd');
+                dd.textContent = definition;
+
+                const editButtons = document.createElement('span');
+                editButtons.className = 'edit-buttons';
+                editButtons.innerHTML = ' <button onclick="editTerm(this)">Editar</button> <button onclick="deleteTerm(this)">Eliminar</button>';
+                dd.appendChild(editButtons);
+
+                dl.appendChild(dt);
+                dl.appendChild(dd);
+
+                document.getElementById('term').value = '';
+                document.getElementById('definition').value = '';
+
+                saveDictionary();
+            }
+        }
+
+        function editTerm(button) {
+            const dd = button.parentElement;
+            const dt = dd.previousElementSibling;
+            
+            const newTerm = prompt('Editar término', dt.textContent);
+            const newDefinition = prompt('Editar definición', dd.textContent.replace('EditarEliminar', '').trim());
+
+            if (newTerm && newDefinition) {
+                dt.textContent = newTerm;
+                dd.firstChild.textContent = newDefinition;
+                saveDictionary();
+            }
+        }
+
+        function deleteTerm(button) {
+            if (confirm('¿Estás seguro de que deseas eliminar este término?')) {
+                const dd = button.parentElement;
+                const dt = dd.previousElementSibling;
+
+                dt.remove();
+                dd.remove();
+                saveDictionary();
+            }
+        }
+
+        function saveDictionary() {
+            const dl = document.getElementById('dictionary');
+            const terms = [];
+            const children = dl.children;
+
+            for(let i = 0; i < children.length; i += 2) {
+                const term = children[i].textContent;
+                const definition = children[i + 1].firstChild.textContent;
+                terms.push({ term, definition });
+            }
+
+            localStorage.setItem('dictionary', JSON.stringify(terms));
+        }
+
+        function loadDictionary() {
+            const dl = document.getElementById('dictionary');
+            const terms = JSON.parse(localStorage.getItem('dictionary')) || [];
+
+            dl.innerHTML = '';
+            for(const { term, definition } of terms) {
+                const dt = document.createElement('dt');
+                dt.textContent = term;
+
+                const dd = document.createElement('dd');
+                dd.textContent = definition;
+
+                const editButtons = document.createElement('span');
+                editButtons.className = 'edit-buttons';
+                editButtons.innerHTML = ' <button onclick="editTerm(this)">Editar</button> <button onclick="deleteTerm(this)">Eliminar</button>';
+                dd.appendChild(editButtons);
+
+                dl.appendChild(dt);
+                dl.appendChild(dd);
+            }
+        }
+
+        window.onload = loadDictionary;
+    </script>
+</body>
+</html>
