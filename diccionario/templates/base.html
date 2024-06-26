@@ -1,12 +1,9 @@
-<!-- diccionario_salud_col/templates/base.html -->
-
 <!DOCTYPE html>
 <html lang="es">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{% block title %}Diccionario del Sistema de Salud Colombiano{% endblock %}</title>
-    <link rel="stylesheet" href="{% static 'css/style.css' %}">
 </head>
 <body>
     <header>
@@ -14,8 +11,8 @@
         <nav>
             <ul>
                 <li><a href="{% url 'home' %}">Inicio</a></li>
-                <li><a href="{% url 'about' %}">Acerca de</a></li>
-                <!-- Agregar más elementos de menú según sea necesario -->
+                <li><a href="{% url 'lista_terminos' %}">Diccionario</a></li>
+
             </ul>
         </nav>
     </header>

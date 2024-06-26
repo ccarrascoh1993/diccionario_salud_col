@@ -14,15 +14,15 @@ Including another URLconf
     1. Import the include() function: from django.urls import include, path
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
-# En salud_col_diccionario/urls.py
+
 
 from django.contrib import admin
 from django.urls import path, include
+from diccionario import views as d_views
 
 urlpatterns = [
+    path ('', d_views.home, name ='home'),
     path('admin/', admin.site.urls),
-
-    # Incluye las URLs de la aplicación 'diccionario'
     path('diccionario/', include('diccionario.urls')),
 ]
 
