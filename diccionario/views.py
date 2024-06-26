@@ -2,7 +2,7 @@ from django.shortcuts import render, redirect
 from .models import Termino
 
 def home(request):
-    return render(request, 'home.html')
+    return render(request, 'index.html')
 
 def lista_terminos(request):
     terminos = Termino.objects.all()
