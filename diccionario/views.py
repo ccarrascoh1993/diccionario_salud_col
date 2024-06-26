@@ -8,3 +8,10 @@ def agregar_termino(request):
         Termino.objects.create(term=term, definition=definition)
         return redirect('lista_terminos')
     return render(request, 'diccionario/agregar_termino.html')
+
+def home(request):
+    return render(request, 'home.html')
+
+def dictionary(request):
+    # Lógica para interactuar con el diccionario
+    return render(request, 'dictionary.html')
