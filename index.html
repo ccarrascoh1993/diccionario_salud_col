@@ -47,11 +47,20 @@
         <!-- Los términos se cargarán aquí -->
     </dl>
     <script>
+        const concepts = [
+            { term: 'EPS', definition: 'Entidades Promotoras de Salud, encargadas de afiliar a los ciudadanos al sistema de salud y gestionar los servicios.' },
+            { term: 'IPS', definition: 'Instituciones Prestadoras de Servicios de Salud, proveen atención médica y hospitalaria.' },
+            { term: 'ADRES', definition: 'Administradora de los Recursos del Sistema General de Seguridad Social en Salud, responsable de la administración de los recursos del sistema.' },
+            { term: 'Plan Obligatorio de Salud (POS)', definition: 'Conjunto de servicios de salud que deben garantizar las EPS a sus afiliados.' },
+            { term: 'Ministerio de Salud y Protección Social', definition: 'Entidad encargada de formular y coordinar la política de salud en Colombia.' }
+            // Puedes agregar más términos según necesites
+        ];
+
         function addTerm() {
             const term = document.getElementById('term').value;
             const definition = document.getElementById('definition').value;
 
-            if(term && definition) {
+            if (term && definition) {
                 const dl = document.getElementById('dictionary');
 
                 const dt = document.createElement('dt');
@@ -78,13 +87,13 @@
         function editTerm(button) {
             const dd = button.parentElement;
             const dt = dd.previousElementSibling;
-            
+
             const newTerm = prompt('Editar término', dt.textContent);
-            const newDefinition = prompt('Editar definición', dd.textContent.replace('EditarEliminar', '').trim());
+            const newDefinition = prompt('Editar definición', dd.childNodes[0].textContent.trim());
 
             if (newTerm && newDefinition) {
                 dt.textContent = newTerm;
-                dd.firstChild.textContent = newDefinition;
+                dd.childNodes[0].textContent = newDefinition;
                 saveDictionary();
             }
         }
@@ -105,9 +114,9 @@
             const terms = [];
             const children = dl.children;
 
-            for(let i = 0; i < children.length; i += 2) {
+            for (let i = 0; i < children.length; i += 2) {
                 const term = children[i].textContent;
-                const definition = children[i + 1].firstChild.textContent;
+                const definition = children[i + 1].textContent;
                 terms.push({ term, definition });
             }
 
@@ -119,7 +128,7 @@
             const terms = JSON.parse(localStorage.getItem('dictionary')) || [];
 
             dl.innerHTML = '';
-            for(const { term, definition } of terms) {
+            for (const { term, definition } of terms) {
                 const dt = document.createElement('dt');
                 dt.textContent = term;
 
@@ -136,7 +145,25 @@
             }
         }
 
-        window.onload = loadDictionary;
+        // Cargar conceptos básicos al diccionario al cargar la página
+        window.onload = function() {
+            loadDictionary();
+            for (const { term, definition } of concepts) {
+                const dt = document.createElement('dt');
+                dt.textContent = term;
+
+                const dd = document.createElement('dd');
+                dd.textContent = definition;
+
+                const editButtons = document.createElement('span');
+                editButtons.className = 'edit-buttons';
+                editButtons.innerHTML = ' <button onclick="editTerm(this)">Editar</button> <button onclick="deleteTerm(this)">Eliminar</button>';
+                dd.appendChild(editButtons);
+
+                document.getElementById('dictionary').appendChild(dt);
+                document.getElementById('dictionary').appendChild(dd);
+            }
+        };
     </script>
 </body>
 </html>
