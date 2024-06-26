@@ -1,0 +1,17 @@
+<!-- En salud_col_diccionario/diccionario/templates/diccionario/agregar_termino.html -->
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Agregar Término - Diccionario de Salud Colombiano</title>
+</head>
+<body>
+    <h1>Agregar Término</h1>
+    <form method="post">
+        {% csrf_token %}
+        Término: <input type="text" name="term"><br>
+        Definición: <textarea name="definition"></textarea><br>
+        <button type="submit">Agregar</button>
+    </form>
+</body>
+</html>
