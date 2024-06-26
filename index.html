@@ -89,11 +89,11 @@
             const dt = dd.previousElementSibling;
 
             const newTerm = prompt('Editar término', dt.textContent);
-            const newDefinition = prompt('Editar definición', dd.childNodes[0].textContent.trim());
+            const newDefinition = prompt('Editar definición', dd.nextElementSibling.textContent);
 
             if (newTerm && newDefinition) {
                 dt.textContent = newTerm;
-                dd.childNodes[0].textContent = newDefinition;
+                dd.nextElementSibling.textContent = newDefinition;
                 saveDictionary();
             }
         }
